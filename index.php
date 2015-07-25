@@ -27,7 +27,7 @@ $grupos = array(
 	}
 	echo $produto_letras;
 	echo '<br>';
-}*/
+}
 
 print_r(calcularValores($grupos));
 echo '<br><br><br> grupos<br><br><br>';
@@ -35,11 +35,16 @@ print_r(calcularValores($cometas));
 echo '<br><br><br>Grupo = '. 6552%DIVISOR;
 echo '<br>Cometa = '. 1264032%DIVISOR;
 echo '<br><br><br><br> Resultado <br>';
-
+*/
 $valores_grupos  = calcularValores($grupos);
 $valores_cometas = calcularValores($cometas);
 
-echo'<br> Grupo não levado: ' . $grupos[gruposNaoLevado(calcularValores($grupos), calcularValores($cometas))];
+$grupos_nao_levado = gruposNaoLevado(calcularValores($grupos), calcularValores($cometas));
+
+//echo'<br> Grupo não levado: ' . $grupos[gruposNaoLevado(calcularValores($grupos), calcularValores($cometas))];
+foreach ($grupos_nao_levado as $key ){
+	echo'<br> Grupo não levado: ' . $grupos[$key];
+}
 
 
 function calcularValores($palavras){
@@ -66,7 +71,8 @@ function gruposNaoLevado($grupos, $cometas){
 		}
 	}
 
-	return implode(', ', $grupos_nao_levado);
+	//return implode(', ', $grupos_nao_levado);
+	return $grupos_nao_levado;
 }
 
 function verificarSeraLevado($grupo, $cometa){
