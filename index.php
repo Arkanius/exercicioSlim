@@ -1,51 +1,50 @@
 <?php 
 
-require('vendor/autoload.php');
-
 define('DIVISOR', 45);
 
+require ('Slim/Slim/Slim.php');
+\Slim\Slim::registerAutoloader();
+$app = new \Slim\Slim();
+$app->response()->header('Content-Type', 'application/json;charset=utf-8');
 
-$cometas = array(
-		'HALLEY',
-		'ENCKE',
-		'WOLF',
-		'KUSHIDA',
-		'LARANJA'
-	);
+$app->get('/', 'getGrupos');
 
-$grupos = array(
-		'AMARELO',
-		'VERMELHO',
-		'PRETO',
-		'AZUL'
-	);
+$app->get('/grupos', 'getGrupos');
 
-//print_r($letras);
-/*foreach($cometas as $cometa){
-	$produto_letras = 1;
-	for($i = 0; $i<strlen($cometa); $i++){
-		$produto_letras *= array_search($cometa[$i], $letras)+1;
-		
+$app->get('/test', function () {
+	echo '{"Test"}';
+});
+
+
+$app->run();
+
+
+
+
+function getGrupos(){
+
+	$cometas = array(
+			'HALLEY',
+			'ENCKE',
+			'WOLF',
+			'KUSHIDA'
+		);
+
+	$grupos = array(
+			'AMARELO',
+			'VERMELHO',
+			'PRETO',
+			'AZUL'
+		);
+
+	$indices_nao_levados = gruposNaoLevado(calcularValores($grupos), calcularValores($cometas));
+
+	$grupos_nao_levados = array();
+	
+	foreach($indices_nao_levados as $i){
+		$grupos_nao_levados[] = $grupos[$i];
 	}
-	echo $produto_letras;
-	echo '<br>';
-}
-
-print_r(calcularValores($grupos));
-echo '<br><br><br> grupos<br><br><br>';
-print_r(calcularValores($cometas));
-echo '<br><br><br>Grupo = '. 6552%DIVISOR;
-echo '<br>Cometa = '. 1264032%DIVISOR;
-echo '<br><br><br><br> Resultado <br>';
-*/
-$valores_grupos  = calcularValores($grupos);
-$valores_cometas = calcularValores($cometas);
-
-$grupos_nao_levado = gruposNaoLevado(calcularValores($grupos), calcularValores($cometas));
-
-//echo'<br> Grupo não levado: ' . $grupos[gruposNaoLevado(calcularValores($grupos), calcularValores($cometas))];
-foreach ($grupos_nao_levado as $key ){
-	echo'<br> Grupo não levado: ' . $grupos[$key];
+	echo '{"grupos":'.json_encode($grupos_nao_levados).'}';	
 }
 
 
@@ -56,11 +55,9 @@ function calcularValores($palavras){
 	foreach($palavras as $key => $palavra){
 		$produto_letras[$key] = 1;
 		for($i = 0; $i<strlen($palavra); $i++){
-			$produto_letras[$key] *= array_search($palavra[$i], $alfabeto)+1;
-			
+			$produto_letras[$key] *= array_search($palavra[$i], $alfabeto)+1;		
 		}
 	}
-
 	return $produto_letras;
 }
 
@@ -72,8 +69,6 @@ function gruposNaoLevado($grupos, $cometas){
 			$grupos_nao_levado[] = $i;
 		}
 	}
-
-	//return implode(', ', $grupos_nao_levado);
 	return $grupos_nao_levado;
 }
 

@@ -8,15 +8,9 @@ require ('../Slim/Slim/Slim.php');
 $app = new \Slim\Slim();
 $app->response()->header('Content-Type', 'application/json;charset=utf-8');
 
-$app->get('/', function () {
-    echo "{message:'Grupos e cometas'}";
-});
+$app->get('/grupos', 'getGrupos');
 
-//$app->get('/grupos','getGrupos');
-
-$app->get('/grupos', function () {
-    echo "{message:'Grupos e cometas'}";
-});
+$app->get('/', 'getGrupos');
 
 $app->run();
 
